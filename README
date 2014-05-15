@@ -1,0 +1,15 @@
+This module manages cron entries.
+
+Unlinke the cron type, it does not require to define the exact timing of
+when the cron job executes, it instead relies on run-parts and cron directories.
+
+You can add a cron job with a predefined frequency by using the cron::entry define.
+Look at the define to see the accepted parameters.
+Stderr and stdout of each cron entry is redirected in /var/log/cron/... and a
+logrotate definition is added to manage log rotation.
+
+You can define a frequency by using cron::frequency define.
+Once defined, you can use it as a frequency target to cron::entry.
+
+You can have a completely custom entry using the cron::customentry define,
+which uses the cron.d directory

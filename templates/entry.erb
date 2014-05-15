@@ -1,0 +1,34 @@
+#!/bin/bash
+# Created by puppet. Do not edit.
+
+# redirect std input and std error (appending)
+exec >> <%= @stdout_log %>
+exec 2>> <%= @stderr_log %>
+
+# Die for undefined variables in this script or 
+# if a command does not return 0
+set -u
+set -e
+
+# override PATH for commands
+export PATH="<%= @script_path %>"
+
+<% if @nice -%>
+<% if @lsbdistrelease == '10.04' -%>
+/usr/bin/renice -n <%= @nice %> -p $$ >/dev/null
+<% else -%>
+/usr/bin/renice <%= @nice %> -p $$ >/dev/null
+<% end -%>
+<% end -%>
+<% if @ionice_cls -%>
+/usr/bin/ionice -n<%= @ionice_prio %> -c<%= @ionice_cls %> -p $$ >/dev/null
+<% end -%>
+
+pushd <%= @workdir %> > /dev/null
+<% if @user and @user != "root" -%>
+su -p <%= @user %> -s /bin/bash << EOH
+<%= @command %>
+EOH
+<% else -%>
+<%= @command %>
+<% end -%>

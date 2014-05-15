@@ -1,0 +1,19 @@
+# managed by puppet. Do not edit.
+<% if @mailto != '' -%>
+MAILTO=<%= @mailto %>
+<% end -%>
+<% usr = @user ? @user : "root" -%>
+<% when_ = Array.new -%>
+<% if @special -%>
+<% when_ << "@#{special}" -%>
+<% else -%>
+<% when_ << (minute.kind_of?(Array) ? minute.join(",") : @minute) -%>
+<% when_ << (hour.kind_of?(Array) ? hour.join(",") : @hour) -%>
+<% when_ << (monthday.kind_of?(Array) ? monthday.join(",") : @monthday) -%>
+<% when_ << (month.kind_of?(Array) ? month.join(",") : @month) -%>
+<% when_ << (weekday.kind_of?(Array) ? weekday.join(",") : @weekday)-%>
+<% end -%>
+<% if @comment != '' -%>
+#<%= @comment %>
+<% end -%>
+<%= when_.join(" ") %> root <%= @script %>
