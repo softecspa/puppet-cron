@@ -1,4 +1,8 @@
-class cron {
+class cron (
+  $logrotate_olddir_owner = 'root',
+  $logrotate_olddir_group = 'adm',
+  $logrotate_olddir_mode  = '0750'
+){
 
   $lockdir = '/var/lock'
   $logdir = '/var/log/cron'
@@ -58,12 +62,15 @@ class cron {
   }
 
   logrotate::file {'puppet-cron-logs-custom':
-    log       => "${customlogdir}/*.log",
-    interval  => 'daily',
-    rotation  => '14',
-    options   => ['missingok', 'compress', 'notifempty'],
-    archive   => true,
-    require   => File[$customlogdir]
+    log           => "${customlogdir}/*.log",
+    interval      => 'daily',
+    rotation      => '14',
+    options       => ['missingok', 'compress', 'notifempty'],
+    archive       => true,
+    olddir_owner  => $logrotate_olddir_owner,
+    olddir_group  => $logrotate_olddir_group,
+    olddir_mode   => $logrotate_olddir_mode,
+    require       => File[$customlogdir]
   }
 
   # Cron pattern used here:
@@ -73,6 +80,12 @@ class cron {
   # at different minutes but in the same hour.
   $hour = ip_to_cron(1, 3) + 5
   $minutes = ip_to_cron(4)
+
+  Cron::Frequency {
+    logrotate_olddir_owner  => $logrotate_olddir_owner,
+    logrotate_olddir_group  => $logrotate_olddir_group,
+    logrotate_olddir_mode   => $logrotate_olddir_mode,
+  }
 
   cron::frequency {'hourly':
     minute => $minutes[0],
