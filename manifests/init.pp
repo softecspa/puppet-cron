@@ -1,7 +1,4 @@
 class cron (
-  $logrotate_olddir_owner = 'root',
-  $logrotate_olddir_group = 'adm',
-  $logrotate_olddir_mode  = '0750'
 ){
 
   $lockdir = '/var/lock'
@@ -67,9 +64,6 @@ class cron (
     rotation      => '14',
     options       => ['missingok', 'compress', 'notifempty'],
     archive       => true,
-    olddir_owner  => $logrotate_olddir_owner,
-    olddir_group  => $logrotate_olddir_group,
-    olddir_mode   => $logrotate_olddir_mode,
     require       => File[$customlogdir]
   }
 
@@ -82,9 +76,6 @@ class cron (
   $minutes = ip_to_cron(4)
 
   Cron::Frequency {
-    logrotate_olddir_owner  => $logrotate_olddir_owner,
-    logrotate_olddir_group  => $logrotate_olddir_group,
-    logrotate_olddir_mode   => $logrotate_olddir_mode,
   }
 
   cron::frequency {'hourly':

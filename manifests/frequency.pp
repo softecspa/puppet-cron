@@ -51,9 +51,6 @@ define cron::frequency(
   $logrotate_keep         = '14',
   $ensure                 = present,
   $path                   = false,
-  $logrotate_olddir_owner = 'root',
-  $logrotate_olddir_group = 'adm',
-  $logrotate_olddir_mode  = '0750',
   )
 {
   $crondir = "/etc/cron.${name}"
@@ -91,9 +88,6 @@ define cron::frequency(
     rotation  => $logrotate_keep,
     options   => ['missingok', 'compress', 'notifempty'],
     archive   => true,
-    olddir_owner  => $logrotate_olddir_owner,
-    olddir_group  => $logrotate_olddir_group,
-    olddir_mode   => $logrotate_olddir_mode,
     require   => File[$logdir]
   }
 
