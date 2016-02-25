@@ -15,9 +15,7 @@ class cron (
     require => Service['cron']
   }
 
-  package {'cron':
-    ensure  => installed
-  }
+  ensure_resource('package', 'cron', { 'ensure' => 'latest'  })
 
   service { 'cron':
     ensure  => running,
