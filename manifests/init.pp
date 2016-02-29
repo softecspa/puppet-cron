@@ -1,3 +1,6 @@
+# Customize Cron changing default time execution for 
+# hourly, daily etc...
+#
 class cron (
 ){
 
@@ -34,17 +37,17 @@ class cron (
       ensure  => directory,
       owner   => root,
       group   => admin,
-      mode    => '02775';
+      mode    => '2775';
     $logdir:
       ensure  => directory,
       owner   => root,
       group   => admin,
-      mode    => '02775';
+      mode    => '2775';
     $customlogdir:
       ensure  => directory,
       owner   => root,
       group   => root,
-      mode    => '01777';
+      mode    => '1777';
     $libdir:
       ensure  => directory,
       owner   => root,
@@ -57,12 +60,12 @@ class cron (
   }
 
   logrotate::file {'puppet-cron-logs-custom':
-    log           => "${customlogdir}/*.log",
-    interval      => 'daily',
-    rotation      => '14',
-    options       => ['missingok', 'compress', 'notifempty'],
-    archive       => true,
-    require       => File[$customlogdir]
+    log      => "${customlogdir}/*.log",
+    interval => 'daily',
+    rotation => '14',
+    options  => ['missingok', 'compress', 'notifempty'],
+    archive  => true,
+    require  => File[$customlogdir]
   }
 
   # Cron pattern used here:
@@ -81,8 +84,8 @@ class cron (
     hour   => '*',
   }
   cron::frequency {'daily':
-    hour    => $hour,
-    minute  => $minutes[1],
+    hour   => $hour,
+    minute => $minutes[1],
   }
   cron::frequency {'weekly':
     hour    => $hour,
@@ -90,9 +93,9 @@ class cron (
     weekday => 7,
   }
   cron::frequency {'monthly':
-    hour      => $hour,
-    minute    => $minutes[3],
-    monthday  => 1,
+    hour     => $hour,
+    minute   => $minutes[3],
+    monthday => 1,
   }
 
   # frequently: every 5 minutes
@@ -107,8 +110,8 @@ class cron (
 
   # 4 times in a day
   cron::frequency {'4hours':
-    minute  => ip_to_cron(1),
-    hour    => ip_to_cron(6,24),
+    minute => ip_to_cron(1),
+    hour   => ip_to_cron(6,24),
   }
 
 }

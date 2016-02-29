@@ -70,7 +70,7 @@ define cron::frequency(
     ensure  => $ensure_d,
     owner   => root,
     group   => admin,
-    mode    => '02775',
+    mode    => '2775',
     require => File['/etc/crontab']
   }
 
@@ -78,17 +78,17 @@ define cron::frequency(
     ensure  => $ensure_d,
     owner   => root,
     group   => root,
-    mode    => '01777',
+    mode    => '1777',
     require => File[$cron::logdir]
   }
 
   logrotate::file {"puppet-cron-logs-${name}":
-    log       => "${logdir}/*.log",
-    interval  => $logrotate_interval,
-    rotation  => $logrotate_keep,
-    options   => ['missingok', 'compress', 'notifempty'],
-    archive   => true,
-    require   => File[$logdir]
+    log      => "${logdir}/*.log",
+    interval => $logrotate_interval,
+    rotation => $logrotate_keep,
+    options  => ['missingok', 'compress', 'notifempty'],
+    archive  => true,
+    require  => File[$logdir]
   }
 
   cron {"cron-${name}":

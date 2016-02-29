@@ -89,7 +89,7 @@ define cron::customentry(
 {
   include cron
   $logdir = $cron::customlogdir
-  $script = "$cron::libdir/${name}"
+  $script = "${cron::libdir}/${name}"
   $stdout_log = "${logdir}/${name}.stdout.log"
   $stderr_log = "${logdir}/${name}.stderr.log"
 
@@ -107,7 +107,7 @@ define cron::customentry(
     mode    => '0750',
     content => template('cron/entry.erb'),
     require => File[$cron::customlogdir];
-  "$cron::customdir/${name}":
+  "${cron::customdir}/${name}":
     ensure  => $ensure,
     owner   => 'root',
     group   => 'admin',

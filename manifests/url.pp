@@ -1,3 +1,5 @@
+# wget and url periodically
+#
 define cron::url (
   $url,
   $ensure             = present,
@@ -56,7 +58,7 @@ define cron::url (
   $param_wget_output = $stdin_output?{
     false =>  $wget_output?{
                 ''      => '',
-                default => " -O $wget_output"
+                default => " -O ${wget_output}"
               },
     true  => ' -O-',
   }
@@ -94,16 +96,16 @@ define cron::url (
   $cron_command = "wget \"${real_url}\"${param_tries}${param_read_timeout}${param_wget_output}${param_quiet}${param_timeout}${param_spider}${param_no_http_keep_alive}${param_no_cookies}${other_params}"
 
   cron::customentry{$name :
-    ensure    => $ensure,
-    command   => $cron_command,
-    user      => $user,
-    hour      => $hour,
-    minute    => $minute,
-    month     => $month,
-    monthday  => $monthday,
-    weekday   => $weekday,
-    comment   => $comment,
-    mailto    => $mailto
+    ensure   => $ensure,
+    command  => $cron_command,
+    user     => $user,
+    hour     => $hour,
+    minute   => $minute,
+    month    => $month,
+    monthday => $monthday,
+    weekday  => $weekday,
+    comment  => $comment,
+    mailto   => $mailto
   }
 
 }
